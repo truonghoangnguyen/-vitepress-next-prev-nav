@@ -1,0 +1,51 @@
+{
+  "name": "vitepress-next-prev-nav",
+  "version": "0.1.0",
+  "description": "VitePress plugin: khai báo nav (FilelistNav) tự gắn prev/next + CLI `gennav` để generate nav tự động + component hiển thị.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./theme": "./src/theme/index.js"
+  },
+  "bin": {
+    "gennav": "./dist/bin/gennav.js"
+  },
+  "files": [
+    "dist",
+    "src/theme",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepublishOnly": "npm run build",
+    "test": "echo \"(chưa có test)\" && exit 0"
+  },
+  "keywords": [
+    "vitepress",
+    "vite-plugin",
+    "vue",
+    "next-prev",
+    "navigation",
+    "docs"
+  ],
+  "peerDependencies": {
+    "vitepress": "^1.0.0",
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "vitepress": "^1.5.0",
+    "vue": "^3.5.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
