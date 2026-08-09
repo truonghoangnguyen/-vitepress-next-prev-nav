@@ -7,6 +7,7 @@
  *   gennav docs/ -o nav.json
  */
 
+import path from 'node:path'
 import { generateNav } from '../src/cli/generate'
 
 function printHelp() {
@@ -17,7 +18,7 @@ Usage:
   gennav <folder> [options]
 
 Options:
-  -o, --out <file>     File output (default: nav.json)
+  -o, --out <file>     File output (default: <folder>/nav.json)
   -h, --help           Hiện help này
 `)
 }
@@ -36,8 +37,9 @@ async function main() {
   const out = outIndex !== -1 ? args[outIndex + 1] : undefined
 
   try {
-    const result = await generateNav(targetFolder, { out })
-    console.log(`✔ gennav: đã xử lý "${targetFolder}" (${result.length} items)`)
+    const navItems = await generateNav(targetFolder, { out })
+    const outputFile = path.resolve(process.cwd(), out || path.join(targetFolder, 'nav.json'))
+    console.log(`✔ gennav: đã xử lý "${targetFolder}" (${navItems.length} items) -> đã ghi vào "${outputFile}"`)
   } catch (err) {
     console.error('✘ gennav: lỗi khi generate nav')
     console.error(err)

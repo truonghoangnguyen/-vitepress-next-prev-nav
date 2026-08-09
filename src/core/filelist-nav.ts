@@ -48,10 +48,34 @@ export interface FilelistItem {
   link: string
 }
 
+export type FilelistInput = FilelistItem[] | FilelistItem[][]
+
 interface FilelistNavPlugin {
   name: string
   transformPageData(pageData: any): any
   configResolved?(config: any): void
+}
+
+/**
+ * Chuẩn hóa input để hỗ trợ linh hoạt các cách truyền:
+ * - FilelistNav(nav1, nav2) -> truyền nhiều tham số FilelistItem[]
+ * - FilelistNav([nav1, nav2]) -> truyền 1 mảng chứa các FilelistItem[]
+ * - FilelistNav(nav1) -> truyền 1 FilelistItem[]
+ */
+function normalizeLists(inputs: FilelistInput[]): FilelistItem[][] {
+  const result: FilelistItem[][] = []
+  for (const input of inputs) {
+    if (!Array.isArray(input) || input.length === 0) continue
+
+    if (Array.isArray(input[0])) {
+      // Dạng truyền mảng chứa mảng: [nav1, nav2]
+      result.push(...(input as FilelistItem[][]))
+    } else if (typeof input[0] === 'object' && input[0] !== null && 'link' in input[0]) {
+      // Dạng truyền danh sách đơn: nav1 (FilelistItem[])
+      result.push(input as FilelistItem[])
+    }
+  }
+  return result
 }
 
 /**
@@ -107,8 +131,9 @@ function transformPage(pageData: any, lookup: Map<string, { index: number; list:
 /**
  * Tạo plugin nav từ một hoặc nhiều filelist.
  */
-export function FilelistNav(...lists: FilelistItem[][]): FilelistNavPlugin {
-  const lookup = buildLookup(lists)
+export function FilelistNav(...lists: FilelistInput[]): FilelistNavPlugin {
+  const normalizedLists = normalizeLists(lists)
+  const lookup = buildLookup(normalizedLists)
 
   return {
     name: 'vitepress-plugin-filelist-nav',

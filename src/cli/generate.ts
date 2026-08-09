@@ -3,7 +3,7 @@ import path from 'node:path'
 import type { FilelistItem } from '../core/filelist-nav'
 
 export interface GenerateNavOptions {
-  /** File output, default 'nav.json' */
+  /** File output, default '<folderPath>/nav.json' */
   out?: string
   /** Glob pattern lọc file, chưa dùng — để dành */
   pattern?: string
@@ -53,7 +53,7 @@ function parseFrontmatterAndTitle(content: string, filename: string): { title: s
  * 2. Đọc frontmatter (title, order) hoặc H1 `# title`
  * 3. Sắp xếp file theo order / tên file (natural sort)
  * 4. Build FilelistItem[] ({ text, link })
- * 5. Ghi kết quả ra file `out` (mặc định 'nav.json')
+ * 5. Ghi kết quả ra file `out` (mặc định `<folderPath>/nav.json`)
  *
  * @param folderPath - đường dẫn folder chứa docs, ví dụ "docs/"
  */
@@ -61,7 +61,7 @@ export async function generateNav(
   folderPath: string,
   options: GenerateNavOptions = {}
 ): Promise<FilelistItem[]> {
-  const { out = 'nav.json' } = options
+  const { out = path.join(folderPath, 'nav.json') } = options
 
   const cwd = process.cwd()
   const absFolder = path.resolve(cwd, folderPath)

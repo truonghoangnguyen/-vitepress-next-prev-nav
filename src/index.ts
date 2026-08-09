@@ -8,4 +8,4 @@
  */
 
 export { FilelistNav, defineConfig } from './core/filelist-nav'
-export type { FilelistItem } from './core/filelist-nav'
+export type { FilelistItem, FilelistInput } from './core/filelist-nav'
