@@ -83,7 +83,15 @@ function normalizeLists(inputs: FilelistInput[]): FilelistItem[][] {
  * "/kinhtruongbo/thichminhchau/mucluc.md" → "kinhtruongbo/thichminhchau/mucluc"
  */
 function toKey(link: string): string {
-  return link.replace(/^\//, '').replace(/\.md$/, '')
+  return link.replace(/\\/g, '/').replace(/^\//, '').replace(/\.md$/, '')
+}
+
+/**
+ * Format link cho frontmatter: giữ leading slash và bỏ .md
+ * "kinhtruongbo/thichminhchau/mucluc.md" → "/kinhtruongbo/thichminhchau/mucluc"
+ */
+function formatLink(link: string): string {
+  return '/' + toKey(link)
 }
 
 /**
@@ -107,7 +115,7 @@ function transformPage(pageData: any, lookup: Map<string, { index: number; list:
   const { relativePath } = pageData
   if (!relativePath) return pageData
 
-  const key = relativePath.replace(/\.md$/, '')
+  const key = toKey(relativePath)
   const match = lookup.get(key)
   if (!match) return pageData
 
@@ -117,12 +125,12 @@ function transformPage(pageData: any, lookup: Map<string, { index: number; list:
 
   const prev = list[index - 1]
   pageData.frontmatter.prev = prev
-    ? { text: prev.text, link: toKey(prev.link) }
+    ? { text: prev.text, link: formatLink(prev.link) }
     : undefined
 
   const next = list[index + 1]
   pageData.frontmatter.next = next
-    ? { text: next.text, link: toKey(next.link) }
+    ? { text: next.text, link: formatLink(next.link) }
     : undefined
 
   return pageData

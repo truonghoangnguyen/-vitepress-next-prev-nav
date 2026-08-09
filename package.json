@@ -24,7 +24,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "prepublishOnly": "npm run build",
-    "test": "echo \"(chưa có test)\" && exit 0"
+    "test": "npm run build && node --test test/*.test.js"
   },
   "keywords": [
     "vitepress",
