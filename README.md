@@ -80,27 +80,6 @@ export default defineConfig({
 
 ---
 
-## 🎨 Optional: Custom UI Component (`<NextPrevNav />`)
-
-By default, the plugin automatically leverages VitePress's built-in Next/Prev UI. If you prefer to **customize your own navigation UI**, the package provides a `<NextPrevNav />` Vue component:
-
-1. **Register the component in `.vitepress/theme/index.js` (or `.ts`):**
-   ```js
-   import DefaultTheme from 'vitepress/theme'
-   import { registerNextPrevNav } from 'vitepress-next-prev-nav/theme'
-
-   export default {
-     extends: DefaultTheme,
-     enhanceApp({ app }) {
-       registerNextPrevNav(app)
-     }
-   }
-   ```
-
-2. **Use `<NextPrevNav />` inside your custom Vue layout or template.**
-
----
-
 ## 💡 How It Works
 
 The `FilelistNav` plugin hooks into the VitePress build and dev processes. It automatically calculates the previous (`prev`) and next (`next`) links based on their sequence in the provided list, then injects them into the page's frontmatter (`pageData.frontmatter.prev` & `pageData.frontmatter.next`).
