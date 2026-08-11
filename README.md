@@ -1,90 +1,90 @@
 # vitepress-next-prev-nav
 
-Plugin tự động tạo và hiển thị thanh điều hướng **Bài trước / Bài tiếp theo (`Prev / Next`)** cho các trang tài liệu trong VitePress dựa trên danh sách bài viết bạn cung cấp.
+A VitePress plugin that automatically generates and displays **Previous / Next (`Prev / Next`)** navigation links for documentation pages based on your custom article list.
 
-✨ **Đặc điểm nổi bật:**
-- **Không cần tạo Theme/Layout custom**: Tự động tương thích 100% với giao diện mặc định (Default Theme) của VitePress thông qua `frontmatter.prev` và `frontmatter.next`.
-- **Hỗ trợ CLI `gennav`**: Tự động quét thư mục `.md` và tạo file danh sách điều hướng.
-- **Hỗ trợ nhiều danh sách nav**: Dễ dàng phân chia nav cho từng mục/chủ đề khác nhau.
+✨ **Key Features:**
+- **Zero theme customization required**: 100% compatible out-of-the-box with the default VitePress theme via standard `frontmatter.prev` and `frontmatter.next`.
+- **Built-in CLI (`gennav`)**: Automatically scans `.md` files in a target directory and generates navigation list JSON files.
+- **Multi-nav list support**: Easily configure separate navigation flows for different document categories or topics.
 
 ---
 
-## 📦 Cài đặt
+## 📦 Installation
 
 ```bash
 npm install vitepress-next-prev-nav
-# hoặc
+# or
 yarn add vitepress-next-prev-nav
-# hoặc
+# or
 pnpm add vitepress-next-prev-nav
 ```
 
 ---
 
-## 🚀 Cách sử dụng (Chỉ 1 bước duy nhất)
+## 🚀 Usage (Single Step Setup)
 
-Chỉ cần cấu hình trong file `.vitepress/config.ts` bằng cách sử dụng `defineConfig` và `FilelistNav` từ package:
+Configure the plugin inside `.vitepress/config.ts` using `defineConfig` and `FilelistNav` exported from the package:
 
 ```ts
 // .vitepress/config.ts
 import { defineConfig, FilelistNav } from 'vitepress-next-prev-nav'
 
-// Danh sách các bài viết theo đúng thứ tự đọc
+// List of articles in reading order
 const myList = [
-  { text: 'Mục lục', link: '/guide/mucluc' },
-  { text: 'Bài 1: Giới thiệu', link: '/guide/bai-1' },
-  { text: 'Bài 2: Cài đặt', link: '/guide/bai-2' },
+  { text: 'Table of Contents', link: '/guide/toc' },
+  { text: 'Chapter 1: Introduction', link: '/guide/chapter-1' },
+  { text: 'Chapter 2: Installation', link: '/guide/chapter-2' },
 ]
 
 export default defineConfig({
-  // ... Các cấu hình VitePress khác của bạn
+  // ... Your other VitePress configuration options
   plugins: [
     FilelistNav(myList)
   ]
 })
 ```
 
-🎉 **Xong!** VitePress sẽ tự động hiển thị nút chuyển bài ở cuối mỗi trang tài liệu có trong danh sách.
+🎉 **That's it!** VitePress will automatically display the navigation buttons at the bottom of each documentation page in the list.
 
 ---
 
-## 🛠 Tự động tạo danh sách bài viết bằng CLI `gennav`
+## 🛠 Auto-generate Navigation Lists with `gennav` CLI
 
-Thay vì tự gõ danh sách bằng tay, bạn có thể dùng CLI `gennav` để quét tự động các file `.md` trong thư mục:
+Instead of manually constructing navigation arrays, use the `gennav` CLI tool to scan `.md` files in a folder automatically:
 
 ```bash
-# Quét thư mục docs/feyman/ và tự động tạo file nav.json trong thư mục đó (docs/feyman/nav.json)
-npx gennav docs/feyman/
+# Scan docs/feynman/ directory and generate docs/feynman/nav.json
+npx gennav docs/feynman/
 
-# Tương tự cho thư mục khác:
+# Scan another directory:
 npx gennav docs/math/
 ```
 
-Sau đó import các file `nav.json` vào `.vitepress/config.ts`:
+Then import the generated `nav.json` files into `.vitepress/config.ts`:
 
 ```ts
 // .vitepress/config.ts
 import { defineConfig, FilelistNav } from 'vitepress-next-prev-nav'
-import feymanNav from '../docs/feyman/nav.json'
+import feynmanNav from '../docs/feynman/nav.json'
 import mathNav from '../docs/math/nav.json'
 
 export default defineConfig({
   plugins: [
-    // Truyền nhiều nav dạng tham số riêng biệt:
-    FilelistNav(feymanNav, mathNav)
+    // Pass multiple navigation lists as separate arguments:
+    FilelistNav(feynmanNav, mathNav)
     
-    // ...hoặc truyền dạng mảng: FilelistNav([feymanNav, mathNav])
+    // ...or pass them inside an array: FilelistNav([feynmanNav, mathNav])
   ]
 })
 ```
 
 ---
 
-## 🎨 Tùy chọn: Sử dụng UI Component custom (`<NextPrevNav />`)
+## 🎨 Optional: Custom UI Component (`<NextPrevNav />`)
 
-Mặc định, plugin tự động kích hoạt giao diện Next/Prev sẵn có của VitePress. Nếu bạn muốn **tự tùy chỉnh giao diện UI điều hướng riêng**, package có cung cấp sẵn component `<NextPrevNav />`:
+By default, the plugin automatically leverages VitePress's built-in Next/Prev UI. If you prefer to **customize your own navigation UI**, the package provides a `<NextPrevNav />` Vue component:
 
-1. **Đăng ký component trong `.vitepress/theme/index.js`:**
+1. **Register the component in `.vitepress/theme/index.js` (or `.ts`):**
    ```js
    import DefaultTheme from 'vitepress/theme'
    import { registerNextPrevNav } from 'vitepress-next-prev-nav/theme'
@@ -97,47 +97,53 @@ Mặc định, plugin tự động kích hoạt giao diện Next/Prev sẵn có 
    }
    ```
 
-2. **Dùng thẻ `<NextPrevNav />` trong file Vue Layout hoặc template của bạn.**
+2. **Use `<NextPrevNav />` inside your custom Vue layout or template.**
 
 ---
 
-## 💡 Cách hoạt động
+## 💡 How It Works
 
-Plugin `FilelistNav` chạy trong quá trình VitePress build/dev. Nó tự động tính toán bài trước (`prev`) và bài sau (`next`) dựa trên thứ tự trong danh sách, sau đó inject vào `frontmatter` (`pageData.frontmatter.prev` & `pageData.frontmatter.next`) của từng trang `.md`. 
+The `FilelistNav` plugin hooks into the VitePress build and dev processes. It automatically calculates the previous (`prev`) and next (`next`) links based on their sequence in the provided list, then injects them into the page's frontmatter (`pageData.frontmatter.prev` & `pageData.frontmatter.next`).
 
-Do đó, VitePress Default Theme nhận diện được dữ liệu này và tự động hiển thị thanh điều hướng ở cuối bài viết.
+Because of this, the VitePress Default Theme seamlessly detects the injected frontmatter and renders the navigation links at the end of each article.
 
 ---
 
-## 🛠 Phát triển Package (Local Development)
+## 🛠 Local Development & Testing
 
 ```bash
-# Cài đặt dependencies
+# Install dependencies
 npm install
 
-# Build TypeScript & CLI bằng tsup
+# Build TypeScript & CLI using tsup
 npm run build
 
-# Thử nghiệm local với project VitePress khác
+# Test locally with another VitePress project
 npm link
-# Ở project VitePress test:
+# Inside your test VitePress project directory:
 npm link vitepress-next-prev-nav
 ```
 
-### Cấu trúc dự án
+### Project Structure
 
 ```
 vitepress-next-prev-nav/
 ├── bin/
 │   └── gennav.ts           # CLI entry point
 ├── src/
-│   ├── index.ts            # Entry point chính (export FilelistNav, defineConfig)
+│   ├── index.ts            # Main package entry point (exports FilelistNav, defineConfig)
 │   ├── core/
-│   │   └── filelist-nav.ts # Logic tính toán & gán frontmatter prev/next
+│   │   └── filelist-nav.ts # Core logic for frontmatter prev/next calculation
 │   ├── cli/
-│   │   └── generate.ts     # Logic quét markdown files của gennav
-│   └── theme/              # Vue Component tùy chọn nếu muốn custom UI
+│   │   └── generate.ts     # Directory scanning logic for gennav CLI
+│   └── theme/              # Optional Vue UI component
 │       ├── index.js        # registerNextPrevNav(app)
-│       ├── NextPrevNav.vue # Component UI custom
+│       ├── NextPrevNav.vue # Custom UI component
 │       └── useNextPrevNav.js
 ```
+
+---
+
+## 📄 License
+
+[MIT](LICENSE)

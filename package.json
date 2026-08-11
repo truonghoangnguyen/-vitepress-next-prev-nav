@@ -1,7 +1,7 @@
 {
   "name": "vitepress-next-prev-nav",
   "version": "0.1.0",
-  "description": "VitePress plugin: khai báo nav (FilelistNav) tự gắn prev/next + CLI `gennav` để generate nav tự động + component hiển thị.",
+  "description": "A VitePress plugin to automatically generate prev/next navigation links from custom article lists, featuring a gennav CLI and custom UI component.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
