@@ -1,6 +1,11 @@
 {
   "name": "vitepress-next-prev-nav",
-  "version": "0.1.1",
+  "version": "0.1.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/truonghoangnguyen/vitepress-next-prev-nav.git"
+  },
+  "homepage": "https://github.com/truonghoangnguyen/vitepress-next-prev-nav",
   "description": "A VitePress plugin to automatically generate prev/next navigation links from custom article lists, featuring a gennav CLI and custom UI component.",
   "type": "module",
   "main": "./dist/index.js",
